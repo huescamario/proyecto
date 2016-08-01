@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+ <meta charset="utf-8"/>
+ <title>Ubicación</title>
+   
+   <script type="text/javascript">
+ 
+     function localizar()
+      {
+        navigator.geolocation.getCurrentPosition(ubicacion,error);
+      }else
+      {
+      	else {
+        alert('Tu navegador no soporta geolocalizacion.');
+      }
+ 
+     function ubicacion(posicion)
+      {
+        var contenedor = document.getElementById("mapa");
+ 
+        var latitud = posicion.coords.latitude;
+        var longitud = posicion.coords.longitude;
+        var precision = posicion.coords.accuracy;
+ 
+         // alert("Lat="+latitud+" - Long="+longitud+" - Precision="+precision);
+         document.getElementById("lti").innerHTML=latitud;
+         document.getElementById("lgi").innerHTML=longitud;
+         var centro = new google.maps.LatLng(latitud,longitud);
+		 //var propiedades = { zoom: 15, center: centro, mapTypeId: google.maps.MapTypeId.ROADMAP };
+		 var map = new google.maps.Map(contenedor);
+  		 var marcador = new google.maps.Marker({ position: centro, map: map, title: "Tu posicion actual" });
+
+       }
+ 
+      function error(error)
+       {
+         if(error.code == 0)
+            alert("Error Desconocido");
+         else if(error.code == 1)
+             alert("No fue posible contactarte");
+         else if(error.code == 2)
+            alert("No hay una ubicacion disponible");
+         else if(error.code == 3)
+            alert("Tiempo agotado");
+        else 
+            alert("Error Desconocido");
+        }
+    </script>
+ 
+</head>
+ <body onLoad="localize()">
+  <button onClick="localizar()">Ver mi Ubicación </button>
+  	<label>Latitud: <span id="lti"></span></label><br/>
+		<label>Latitud: <span id="lgi"></span></label>
+		<div id="map" ></div>
+		
+ </body>
+</html>

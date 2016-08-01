@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Local</title>
+<script src="http://j.maxmind.com/app/geoip.js"></script>
+<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+<script type="text/javascript" >
+
+function getGeo(){
+
+if (navigator.geolocation) {
+navigator.geolocation.getCurrentPosition(geoOK, geoKO);
+} else {
+alert('Tu navegador no soporta geolocalizacion.');
+}
+
+}
+
+function geoOK(position) {
+var latitud = pos.coords.latitude;
+var longitud = pos.coords.longitude;
+var precision = pos.coords.accuracy;
+var contenedor = document.getElementById("map")
+
+document.getElementById("lti").innerHTML=latitud;
+document.getElementById("lgi").innerHTML=longitud;
+document.getElementById("psc").innerHTML=precision;
+var centro = new google.maps.LatLng(latitud,longitud);
+var propiedades = { zoom: 15, center: centro, mapTypeId: google.maps.MapTypeId.ROADMAP };
+var map = new google.maps.Map(contenedor, propiedades);
+var marcador = new google.maps.Marker({ position: centro, map: map, title: "Tu posicion actual" });
+}
+
+function geoKO(err) {
+if (err.code == 1) {
+error('El usuario ha denegado el permiso para obtener informacion de ubicacion.');
+} else if (err.code == 2) {
+error('Tu ubicacion no se puede determinar.');
+} else if (err.code == 3) {
+error('TimeOut.')
+} else {
+error('No sabemos que pasó pero ocurrio un error.');
+}
+}
+
+
+</script>
+
+
+
+</head>
+<body onLoad="localize()">
+<h1>Informacion de Geolocalizacion</h1>
+<form>
+<input type="button" onclick="getGeo()" value="Obtener Latitud y Longitud"/>
+<label>Latitud: <span id="lti"></span></label><br/>
+<label>Latitud: <span id="lgi"></span></label>
+<div id="map" ></div>
+</form>
+</body>
+</html>
